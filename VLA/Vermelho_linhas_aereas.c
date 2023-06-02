@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
+#include <string.h>
 #define NUM_CHAR 11
 #define NUM_VIAGEM 50
 #define NUM_COD 4
@@ -16,7 +17,7 @@
 //PROTÓTIPOS
 int inclusao_voo(struct Viagem V[]);
 void alteracao_info_voo(struct Viagem V[], int quant_voo);
-// void exclusao_voo();
+void exclusao_voo(struct Viagem V[], int quant_voo);
 // void quant_voo_origem();
 // void menor_quant_escala_voo();
 
@@ -24,10 +25,9 @@ int main(){
     setlocale(LC_ALL, "Portuguese");
     struct Viagem viagem[NUM_VIAGEM];
     int resposta = 0, n_viagem = 0;
-    // char resposta = 0;
 
     do{
-        // system("cls");
+        system("cls");
         printf("VERMELHO LINHAS AÉREAS\n");
         printf("Por favor, selecionar as opções abaixo:\n");
         printf("\n1.Incluir voos.\n");
@@ -64,9 +64,9 @@ int main(){
                 }
 
                 break;
-            // case 3:
-            //     exclusao_voo();
-            //     break;
+            case 3:
+                exclusao_voo(viagem, n_viagem);
+                break;
             // case 4:
             //     quant_voo_origem();
             //     break;
@@ -81,7 +81,6 @@ int main(){
         }
 
     }while(resposta != 0);
-
 }
 
 int inclusao_voo(struct Viagem V[]){
@@ -90,7 +89,7 @@ int inclusao_voo(struct Viagem V[]){
     printf("\nDeseja incluir quantos voos?");
     while(scanf("%d",&quant_voo) != ((quant_voo>0) && (quant_voo<50))){
         printf("Entrada inválida. Digite um valor entre 1 e 49: ");
-    };
+    }
     contador = quant_voo;
 
     do{
@@ -110,7 +109,7 @@ int inclusao_voo(struct Viagem V[]){
 
         contador--;
         i++;
-    }while(contador > 0);
+    }while(contador != 0);
     return quant_voo;
 }
 
@@ -122,10 +121,12 @@ void alteracao_info_voo(struct Viagem V[], int quant_voo){
         for(int i = 0; i<quant_voo; i++){
             printf("%d- Viagem %d;\n",i+1,i+1);
         }
-        printf("\nQual das viagens deseja alterar: ");
-        while(scanf("%d",&resposta) != (resposta>0 && resposta<=quant_voo)){
+        printf("%d- Sair;\n",quant_voo+1);
+        printf("\nSelecione uma das opções: ");
+        while(scanf("%d",&resposta) != (resposta>0 && resposta <= quant_voo+1)){
             printf("Número inválido, digite novamente.\n");
         }
+        if(resposta == quant_voo+1) return; //atualiza o flag para sair dessa funçao
 
         do{
             printf("\nVIAGEM %d:",resposta);
@@ -144,13 +145,44 @@ void alteracao_info_voo(struct Viagem V[], int quant_voo){
 
             contador--;
         }while(contador != 0);
-            if(quant_voo > 1){
+            if(quant_voo > 0){
                 printf("\nDeseja alterar mais viagens? ");
                 getchar();
                 while(scanf("%c",&resposta2) != (('s' && 'S') || ('n' && 'N'))){
                     printf("\nResposta inválida, digite novamente");
                 }
             }
-            flag = 1;
-    }while (resposta2 != (('n' || 'N') && flag != 1));
+            if(resposta2 == 'n' || resposta2 == 'N') return; //atualiza o flag para sair dessa funçao
+    }while (flag != 1);
 }
+
+void exclusao_voo(struct Viagem V[], int quant_voo){
+    int resposta = 0, flag = 0;
+    char resposta2 = 0;
+    do{
+        printf("EXCLUSÃO DAS VIAGENS CADASTRADAS:\n");
+        for(int i = 0; i<quant_voo; i++){
+            printf("%d- Viagem %d;\n",i+1,i+1);
+        }
+        printf("%d- Sair;\n",quant_voo+1);
+        printf("\nSelecione uma das opções: ");
+        while(scanf("%d",&resposta) != (resposta>0 && resposta <= quant_voo+1)){
+            printf("Número inválido, digite novamente.\n");
+        }
+        if(resposta == quant_voo+1) return;//flag = 1; //atualiza o flag para sair dessa funçao
+
+        //zera as informações da posição ESCOLHIDA do vetor de struct
+        memset(&V[resposta], 0, sizeof(struct Viagem));
+
+        if(quant_voo > 1){
+            printf("\nDeseja excluir mais viagens? ");
+            getchar();
+            while(scanf("%c",&resposta2) != (('s' && 'S') || ('n' && 'N'))){
+                printf("\nResposta inválida, digite novamente");
+            }
+        }
+            if(resposta2 == ('n' && 'N')) flag = 1; //atualiza o flag para sair dessa funçao
+    }while (flag != 1);
+
+}
+
