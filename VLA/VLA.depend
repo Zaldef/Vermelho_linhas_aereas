@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1685715984 source:c:\users\22904270\documents\github\vermelho_linhas_aereas\vla\extensao.c
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+
+1685716948 source:c:\users\22904270\documents\github\vermelho_linhas_aereas\vla\vermelho_linhas_aereas.c
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+
