@@ -16,14 +16,19 @@ int main(){
 
     do{
         system("cls");
-        printf("VERMELHO LINHAS A�REAS\n");
-        printf("\nPor favor, selecionar as op��es abaixo:\n");
-        printf("1.Incluir voos.\n");
-        printf("2.Alterar as informa��es do voo.\n");
-        printf("3.Apagar voo.\n");
-        printf("4.pesquisar voos .\n");
-        printf("5.Quantidade de voos com menor n�mero de escala .\n");
-        printf("0.Sair\n");
+        printf("                                               VERMELHO LINHAS AEREAS\n");
+        printf("                        -------------------------------------------------------------------\n");
+        printf("                                                    Bem vindo                            \n");     
+        printf("                        ------------------------------------------------------------------- \n");
+        printf("                                      Por favor, selecionar as opcoes abaixo:\n");
+        printf("                                      _________________________________________\n\n");
+        printf("                                          1.Incluir voos.\n\n");
+        printf("                                          2.Alterar as informacoes do voo.\n\n");
+        printf("                                          3.Apagar voo.\n\n");
+        printf("                                          4.pesquisar voos (por origem).\n\n");
+        printf("                                          5.Pesquisar voos (por menor escala).\n\n");
+        printf("                                          0.Sair\n");
+         printf("                                     __________________________________________\n\n");
         scanf("%d",&resposta);
 
         switch (resposta) {
@@ -42,10 +47,12 @@ int main(){
                 n_viagem = exclusao_voo(viagem, n_viagem);
                 break;
             case 4:
+                system("cls");
                 lista_viagens(viagem, n_viagem);
                 //quant_voo_origem();
                 break;
             case 5:
+                 system("cls");
                  menor_quant_escala_voo(viagem, n_viagem);
                  break;
             case 0:

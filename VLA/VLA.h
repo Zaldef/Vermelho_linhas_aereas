@@ -61,7 +61,13 @@ void alteracao_info_voo(Viagem V[], int quant_voo){
         printf("VIAGENS CADASTRADAS:\n");
         for(int i = 0; i<quant_voo; i++){
             if(V[i].codigo != 0){
-                printf("\n%d- Viagem(%d)", a, V[i].codigo);
+        printf("%s ---> %s \n",V[i].cidade_origem,V[i].cidade_destino);
+        printf(":---------------------------------------");
+        printf("\n|Viagem %d: %d ", i+1, V[i].codigo);
+        printf("\n|Cidade de Origem: %s ", V[i].cidade_origem);
+        printf("\n|Cidade de Destino: %s ", V[i].cidade_destino);
+        printf("\n|Paradas: %d ", V[i].escalas);
+        printf("\n:--------------------------------------- \n");
                 a++;
             }
         }
@@ -110,7 +116,13 @@ int exclusao_voo(Viagem V[], int quant_voo){
         printf("EXCLUS�O DAS VIAGENS CADASTRADAS:\n");
         for(int i = 0; i<quant_voo; i++){
             if(V[i].codigo != 0){
-                printf("\n%d- Viagem(%d)", a, V[i].codigo);
+        printf("%s ---> %s \n",V[i].cidade_origem,V[i].cidade_destino);
+        printf(":---------------------------------------");
+        printf("\n|Viagem %d: %d ", i+1, V[i].codigo);
+        printf("\n|Cidade de Origem: %s ", V[i].cidade_origem);
+        printf("\n|Cidade de Destino: %s ", V[i].cidade_destino);
+        printf("\n|Paradas: %d ", V[i].escalas);
+        printf("\n:--------------------------------------- \n");
                 contador_v_disp++; //calcula a quantidade de viagens nao apagadas/zeradas
                 a++;
             }
@@ -146,7 +158,7 @@ void lista_viagens (Viagem V[], int quant_voo){
     char resposta2 = 0;
     int flag = 0;
     char city_name[25];
-    printf("digite o nome da cidade:");
+    printf("digite o nome da cidade de origem:");
     scanf("%s",city_name);
     up(city_name);  
 
@@ -168,7 +180,7 @@ do{
 
        }
    }
- printf("\nSair? ");
+ printf("\nSair?(S/N)");
 getchar();
 while(scanf("%c",&resposta2) != (('s' && 'S') || ('n' && 'N'))){
 printf("\nResposta inv�lida, digite novamente");
@@ -244,7 +256,7 @@ for (int i = 0; i < j; i++)
     }
 }
 
- printf("\nSair? ");
+ printf("\nSair(S/N)? ");
 getchar();
 while(scanf("%c",&resposta2) != (('s' && 'S') || ('n' && 'N'))){
 printf("\nResposta inv�lida, digite novamente");
