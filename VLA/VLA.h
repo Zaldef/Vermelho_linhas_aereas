@@ -3,27 +3,23 @@
 #define NUM_COD 4
 #include <ctype.h>
 //ESTRUTURA
- struct Viagem {
-    int codigo;
+ typedef struct Viagem {
+    char codigo[NUM_COD];
     char cidade_origem[NUM_CHAR];
     char cidade_destino[NUM_CHAR];
     int escalas;
-};
-
-typedef struct Viagem Viagem;
-
+}Viagem;
 //PROT�TIPOS
-void lista_viagens(Viagem V[], int quant_voo);
 int inclusao_voo(Viagem V[], int quant_voo, int n_voo_del);
 void alteracao_info_voo(Viagem V[], int quant_voo, int n_voo_del);
 int exclusao_voo(Viagem V[], int quant_voo, int n_voo_del);
+void lista_viagens(Viagem V[], int quant_voo);
 void up();
 void menor_quant_escala_voo(Viagem V[], int quant_voo);
 // void quant_voo_origem();
 
 
 int inclusao_voo(Viagem V[], int quant_voo, int n_voo_del){
-    //PRECISO ARRUMAR ESSA INCLUSÃO
     int resp_quant_voo = 0, max_viagem = 0, quant_tl_voo_e_voo_del = 0, contador_posicao = 0, a = 0;
 
     //verifica a quantidade de voos
@@ -51,7 +47,8 @@ int inclusao_voo(Viagem V[], int quant_voo, int n_voo_del){
     do{
         printf("\nVIAGEM %d:",a+1);
         printf("\nDigite o código da viagem: ");
-        while(scanf("%d",&V[a].codigo) != (V[a].codigo >=1000 && V[a].codigo <= 9999)){
+        getchar();
+        while((strlen(gets(V[a].codigo)) != 4)){
             printf("O número não possui 4 dígitos, digite novamente.\n");
         }
         printf("\nDigite a cidade de origem: ");

@@ -21,3 +21,14 @@
 1685976376 c:\users\22904270\documents\github\vermelho_linhas_aereas\vla\vla.h
 	<ctype.h>
 
+1686001338 source:d:\diretórios\vermelho_linhas_aereas\vla\vermelho_linhas_aereas.c
+	<stdio.h>
+	<stdlib.h>
+	<locale.h>
+	<string.h>
+	"VLA.h"
+	<ctype.h>
+
+1686001384 d:\diretórios\vermelho_linhas_aereas\vla\vla.h
+	<ctype.h>
+
