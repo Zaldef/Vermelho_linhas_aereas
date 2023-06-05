@@ -9,50 +9,57 @@
 //ESTRUTURA
  struct Viagem {
     int codigo;
-    char cidade_origem[NUM_CHAR];
-    char cidade_destino[NUM_CHAR];
+    char cidade_origem[NUM_CHAR+1];
+    char cidade_destino[NUM_CHAR+1];
     int escalas;
 };
 
-//PROT”TIPOS
+//PROT√ìTIPOS
 void lista_viagens(struct Viagem V[], int quant_voo);
-int inclusao_voo(struct Viagem V[]);
-void alteracao_info_voo(struct Viagem V[], int quant_voo);
-int exclusao_voo(struct Viagem V[], int quant_voo);
+int inclusao_voo(struct Viagem V[], int quant_voo, int n_voo_del);
+void alteracao_info_voo(struct Viagem V[], int quant_voo, int n_voo_del);
+int exclusao_voo(struct Viagem V[], int quant_voo, int n_voo_del);
 // void quant_voo_origem();
 // void menor_quant_escala_voo();
 
 int main(){
     setlocale(LC_ALL, "Portuguese");
     struct Viagem viagem[NUM_VIAGEM];
-    int resposta = 0, n_viagem = 0;
+    int resposta = 0, n_viagem = 0, exclusao_viagem = 0, valor_funcao_excluir = 0;
 
     do{
         system("cls");
-        printf("VERMELHO LINHAS A…REAS\n");
-        printf("\nPor favor, selecionar as opÁıes abaixo:\n");
+        /*printf("QUANTIDADE DE VOOS: %d\n\n", n_viagem);
+        printf("QUANTIDADE DE VOOS DELETADOS: %d\n\n", exclusao_viagem);
+        */
+        printf("VERMELHO LINHAS A√âREAS\n");
+        printf("\nPor favor, selecionar as op√ß√µes abaixo:\n");
         printf("1.Incluir voos.\n");
-        printf("2.Alterar as informaÁıes do voo.\n");
+        printf("2.Alterar as informa√ß√µes do voo.\n");
         printf("3.Apagar voo.\n");
         printf("4.Quantidade de voos.\n");
-        printf("5.Quantidade de voos com menor n˙mero de escala .\n");
+        printf("5.Quantidade de voos com menor n√∫mero de escala .\n");
         printf("0.Sair\n");
         scanf("%d",&resposta);
 
         switch (resposta) {
             case 1:
                 system("cls");
-                n_viagem = inclusao_voo(viagem);
-                // n_viagem = inclusao_voo(viagem);
+                n_viagem += inclusao_voo(viagem, n_viagem, exclusao_viagem);
                 break;
             case 2:
                 system("cls");
-                alteracao_info_voo(viagem, n_viagem);
+                alteracao_info_voo(viagem, n_viagem, exclusao_viagem);
                 break;
             case 3:
                 system("cls");
-                //atualiza o n_viagem com a quantidade de voo n„o excluido
-                n_viagem = exclusao_voo(viagem, n_viagem);
+                //armazena o numero de viagens apagadas na var exclusao_viagem
+                if((valor_funcao_excluir = exclusao_voo(viagem, n_viagem, exclusao_viagem))>0){
+                    exclusao_viagem += valor_funcao_excluir;
+                    n_viagem -= valor_funcao_excluir;
+                }
+                else valor_funcao_excluir = 0;
+                //atualiza o n_viagem com a quantidade de voos n√£o excluidos
                 break;
             case 4:
                 //lista_viagens(viagem, n_viagem);
@@ -64,70 +71,91 @@ int main(){
             case 0:
                 return 0;
             default:
-                printf("OpÁ„o inv·lida, digite novamente.\n");
+                printf("Op√ß√£o inv√°lida, digite novamente.\n");
                 break;
         }
 
     }while(resposta != 0);
 }
 
-int inclusao_voo(struct Viagem V[]){
-    int quant_voo = 0, contador =0, i = 0;
+int inclusao_voo(struct Viagem V[], int quant_voo, int n_voo_del){
+    //PRECISO ARRUMAR ESSA INCLUS√ÉO
+    int resp_quant_voo = 0, max_viagem = 0, quant_tl_voo_e_voo_del = 0, contador_posicao = 0, a = 0;
 
-    printf("INCLUS√O DE VIAGENS\n");
+    //verifica a quantidade de voos
+    max_viagem = NUM_VIAGEM - quant_voo;
+
+    printf("INCLUS√ÉO DE VIAGENS\n");
     printf("\nDeseja incluir quantos voos?");
-    while(scanf("%d",&quant_voo) != ((quant_voo>0) && (quant_voo<50))){
-        printf("Entrada inv·lida. Digite um valor entre 1 e 49: ");
+    while(scanf("%d",&resp_quant_voo) != ((resp_quant_voo>0) && (resp_quant_voo<max_viagem))){
+        printf("Entrada inv√°lida. Digite um valor entre 1 √† %d: ", max_viagem);
     }
-    contador = quant_voo;
-
+    // tenho que fazer uma variavel para receber a quantidade de voos existentes e "deletados" para a partir dele referenciar a posi√ß√£o
+    if(quant_voo>0 && n_voo_del>0){
+        quant_tl_voo_e_voo_del = (quant_voo+n_voo_del);
+        contador_posicao = resp_quant_voo;
+        a = quant_tl_voo_e_voo_del;
+    }
+    else if(quant_voo>0){
+        quant_tl_voo_e_voo_del += quant_voo;
+        contador_posicao = resp_quant_voo;
+        a = quant_tl_voo_e_voo_del;
+    }
+    else if(quant_voo==0){
+        contador_posicao = resp_quant_voo;
+    }
     do{
-        printf("\nVIAGEM %d:",i+1);
-        printf("\nDigite o cÛdigo da viagem: ");
-        while(scanf("%d",&V[i].codigo) != (V[i].codigo >=1000 && V[i].codigo <= 9999)){
-            printf("O n˙mero n„o possui 4 dÌgitos, digite novamente.\n");
+        printf("\nVIAGEM %d:",a+1);
+        printf("\nDigite o c√≥digo da viagem: ");
+        while(scanf("%d",&V[a].codigo) != (V[a].codigo >=1000 && V[a].codigo <= 9999)){
+            printf("O n√∫mero n√£o possui 4 d√≠gitos, digite novamente.\n");
         }
         printf("\nDigite a cidade de origem: ");
         getchar();
-        gets(V[i].cidade_origem);
+        gets(V[a].cidade_origem);
         printf("\nDigite a cidade de destino: ");
-        gets(V[i].cidade_destino);
+        gets(V[a].cidade_destino);
         printf("\nDigite a quantidade de paradas: ");
-        scanf("%d", &V[i].escalas);
+        scanf("%d", &V[a].escalas);
         printf("\n");
-
-        contador--;
-        i++;
-    }while(contador != 0);
-    return quant_voo;
+        a++;
+        contador_posicao--;
+    }while(contador_posicao != 0);
+    return resp_quant_voo;
 }
 
-void alteracao_info_voo(struct Viagem V[], int quant_voo){
-    int resposta = 0, contador = 1, flag = 0, a = 1, posicao_cod = 0;
+void alteracao_info_voo(struct Viagem V[], int quant_voo, int n_voo_del){
+    int resposta = 0, contador = 1, flag = 0, a = 1, posicao_cod = 0, quant_tl_voo_e_voo_del = 0, contador_posicao = 0;
     char resposta2 = 0;
     do{
+        // tenho que fazer uma variavel para receber a quantidade de voos existentes e "deletados" para a partir dele referenciar a posi√ß√£o
+        if((quant_voo>0 && n_voo_del>0) || quant_voo>0){
+            quant_tl_voo_e_voo_del += (quant_voo+n_voo_del);
+            contador_posicao = quant_tl_voo_e_voo_del;
+        }
         printf("VIAGENS CADASTRADAS:\n");
-        for(int i = 0; i<quant_voo; i++){
+        for(int i = 0; i<contador_posicao; i++){
             if(V[i].codigo != 0){
+                //if((quant_voo>0 && n_voo_del>0) || quant_voo>0) i = quant_tl_voo_e_voo_del;
                 printf("\n%d- Viagem(%d)", a, V[i].codigo);
                 a++;
             }
         }
-        printf("\n%d- Sair;\n",quant_voo+1);
-        printf("\nSelecione o cÛdigo da viagem ou aperte para sair: ");
-        while(scanf("%d",&resposta) != ((resposta >=1000 && resposta <= 9999) || (resposta == quant_voo+1))){
-                printf("CÛdigo inv·lido, digite novamente.\n");
+        printf("\n%d- Sair;\n",a);
+        printf("\nSelecione o c√≥digo da viagem ou aperte para sair: ");
+        while(scanf("%d",&resposta) != ((resposta >=1000 && resposta <= 9999) || (resposta == a))){
+                printf("C√≥digo inv√°lido, digite novamente.\n");
         }
-        for(int i = 0; i<quant_voo; i++){
-            if(resposta == V[i].codigo) posicao_cod = i; //variavel recebe a posiÁ„o referente o cÛdigo digitado
+        for(int i = 0; i<quant_tl_voo_e_voo_del; i++){
+            if(resposta == V[i].codigo) posicao_cod = i; //variavel recebe a posi√ß√£o referente o c√≥digo digitado
         }
-        if(resposta == quant_voo+1) return; //atualiza o flag para sair dessa funÁao
+        if(resposta == a) return; //atualiza o flag para sair dessa fun√ßao
 
         do{
             printf("\nVIAGEM %d:",posicao_cod+1);
-            printf("\nDigite o cÛdigo da viagem: ");
+            printf("\nDigite o c√≥digo da viagem: ");
             while(scanf("%d",&V[posicao_cod].codigo) != (V[posicao_cod].codigo >=1000 && V[posicao_cod].codigo <= 9999)){
-                printf("CÛdigo inv·lido, digite novamente.\n");
+                printf("C√≥digo inv√°lido, digite novamente.\n");
             }
             printf("\nDigite a cidade de origem: ");
             getchar();
@@ -144,57 +172,93 @@ void alteracao_info_voo(struct Viagem V[], int quant_voo){
                 printf("\nDeseja alterar mais viagens? ");
                 getchar();
                 while(scanf("%c",&resposta2) != (('s' && 'S') || ('n' && 'N'))){
-                    printf("\nResposta inv·lida, digite novamente");
+                    printf("\nResposta inv√°lida, digite novamente");
                 }
             }
-            if(resposta2 == 'n' || resposta2 == 'N') flag = 1; //atualiza o flag para sair dessa funÁao
+            if(resposta2 == 'n' || resposta2 == 'N') flag = 1; //atualiza o flag para sair dessa fun√ßao
     }while (flag != 1);
 }
 
-int exclusao_voo(struct Viagem V[], int quant_voo){
-    int resposta = 0, flag = 0, contador_v_disp = 0, a = 1, posicao_cod = 0;
+int exclusao_voo(struct Viagem V[], int quant_voo, int n_voo_del){
+    int resposta = 0, flag = 0, contador_v_disp = 0, a = 0, posicao_cod = 0, viagems_excluidas = 0, quant_tl_voo_e_voo_del = 0, flag_encerrar = 0, contador_posicao = 0;
     char resposta2 = 0;
     do{
-        printf("EXCLUS√O DAS VIAGENS CADASTRADAS:\n");
-        for(int i = 0; i<quant_voo; i++){
+        // tenho que fazer uma variavel para receber a quantidade de voos existentes e "deletados" para a partir dele referenciar a posi√ß√£o
+        if((quant_voo>0 && n_voo_del>0) || quant_voo>0){
+            quant_tl_voo_e_voo_del += (quant_voo+n_voo_del);
+            contador_posicao = quant_tl_voo_e_voo_del;
+        }
+        printf("LISTA DAS VIAGENS CADASTRADAS:\n");
+        /*printf("\nQUANTIDADE DE NUMEROS DE VOO: %d\n", quant_voo);
+        printf("\nQUANTIDADE DE NUMEROS DE VOO EXCLUIDOS: %d\n", viagems_excluidas);
+        printf("\nQUANTIDADE TOTAL DE VOOS EXCLUIDOS E NAO EXCLUIDOS: %d\n", quant_tl_voo_e_voo_del);
+        */
+        //PRIMEIRA VERIFICA√á√ÉO--------------------------------------------------------------------------------------------------
+        for(int i = 0; i<contador_posicao; i++){
             if(V[i].codigo != 0){
-                printf("\n%d- Viagem(%d)", a, V[i].codigo);
+                //if((quant_voo>0 && n_voo_del>0) || quant_voo>0) i = contador_posicao;
                 contador_v_disp++; //calcula a quantidade de viagens nao apagadas/zeradas
                 a++;
+                printf("\n%d- Viagem(%d)", a, V[i].codigo);
             }
         }
-        //verifica se algumas viagens foram apagadas e atualiza a quantidade de voos nao apagados
-        if (contador_v_disp != quant_voo) quant_voo = quant_voo - contador_v_disp;
-        printf("\n%d- Sair;\n",quant_voo+1);
-        printf("\nSelecione o cÛdigo da viagem ou aperte para sair: ");
-        while(scanf("%d",&resposta) != ((resposta >=1000 && resposta <= 9999) || (resposta == quant_voo+1))){
-                printf("CÛdigo inv·lido, digite novamente.\n");
+        //verifica se algumas viagens foram apagadas e atualiza a vari√°vel viagens_excluidas com a quantidade de viagens apagadas
+        if (contador_v_disp == quant_voo) viagems_excluidas = 0; //quant_voo - contador_v_disp;
+        else if (contador_v_disp<quant_voo)viagems_excluidas = quant_voo - contador_v_disp;
+        //-----------------------------------------------------------------------------------------------------------------------
+        /*printf("\nQUANTIDADE DE NUMEROS DE VOO: %d\n", quant_voo);
+        printf("\nQUANTIDADE DE NUMEROS DE VOO EXCLUIDOS: %d\n", viagems_excluidas);
+        printf("\nQUANTIDADE TOTAL DE VOOS EXCLUIDOS E NAO EXCLUIDOS: %d\n", quant_tl_voo_e_voo_del);
+        */
+        printf("\n%d- Sair;\n",contador_v_disp+1);
+        printf("\nSelecione o c√≥digo da viagem ou aperte para sair: ");
+        while(scanf("%d",&resposta) != ((resposta >=1000 && resposta <= 9999) || (resposta == contador_v_disp+1))){
+                printf("C√≥digo inv√°lido, digite novamente.\n");
         }
-        for(int i = 0; i<quant_voo; i++){
-            if(resposta == V[i].codigo) posicao_cod = i; //variavel recebe a posiÁ„o referente o cÛdigo digitado
-        }
-        if(resposta == quant_voo+1) break;//flag = 1; //atualiza o flag para sair dessa funÁao
+        if (resposta >=1000 && resposta <= 9999){
+            for(int i = 0; i<quant_tl_voo_e_voo_del; i++){
+                if(V[i].codigo != 0){
+                    if(resposta == V[i].codigo) posicao_cod = i; //variavel recebe a posi√ß√£o referente o c√≥digo digitado
+                }
+            }
 
-        //zera as informaÁıes da posiÁ„o ESCOLHIDA do vetor de struct
-        memset(&V[posicao_cod], 0, sizeof(struct Viagem));
+            //zera as informa√ß√µes da posi√ß√£o ESCOLHIDA do vetor de struct
+            memset(&V[posicao_cod], 0, sizeof(struct Viagem));
 
-        if(quant_voo > 1){
+            // SEGUNDA VERIFICA√á√ÉO---------------------------------------------------------------------------------------------------
+            //reinicia as vari√°veis que vao ser utilizadas
+            contador_v_disp = 0;
+            a = 0;
+
+            for(int i = 0; i<contador_posicao; i++){
+                if(V[i].codigo != 0){
+                    contador_v_disp++; //calcula a quantidade de viagens nao apagadas/zeradas
+                    a++;
+                }
+            }
+            //verifica se algumas viagens foram apagadas e atualiza a vari√°vel viagens_excluidas com a quantidade de viagens apagadas
+            if (contador_v_disp == quant_voo) viagems_excluidas = 0; //quant_voo - contador_v_disp;
+            else if (contador_v_disp<quant_voo)viagems_excluidas = quant_voo - contador_v_disp;
+
+            //acaba a verifica√ß√£o
+            flag_encerrar = 1;
+            //-----------------------------------------------------------------------------------------------------------------------
+        }else if(resposta == contador_v_disp+1) break;//flag = 1; //sair dessa fun√ßao
+
+        /*printf("\nQUANTIDADE DE NUMEROS DE VOO: %d\n", quant_voo);
+        printf("\nQUANTIDADE DE NUMEROS DE VOO EXCLUIDOS: %d\n", viagems_excluidas);
+        printf("\nQUANTIDADE TOTAL DE VOOS EXCLUIDOS E NAO EXCLUIDOS: %d\n", quant_tl_voo_e_voo_del);
+        */
+
+        if(contador_v_disp > 1){
             printf("\nDeseja excluir mais viagens? ");
             getchar();
             while(scanf("%c",&resposta2) != (('s' && 'S') || ('n' && 'N'))){
-                printf("\nResposta inv·lida, digite novamente");
+                printf("\nResposta inv√°lida, digite novamente");
             }
-        }
-            if(resposta2 == 'n' || resposta2 == 'N') flag = 1; //atualiza o flag para sair dessa funÁao
-    }while (flag != 1);
-    return quant_voo;
+        }else flag = 1;
+        if(resposta2 == 'n' || resposta2 == 'N') flag = 1; //atualiza o flag para sair dessa fun√ßao
+    }while (flag != 1 || flag_encerrar != 1);
+    return viagems_excluidas; // retorna os voos apagados
 }
-
-//void lista_viagens (struct Viagem V[], int quant_voo){
-//    for(int i = 0; i<quant_voo; i++){
-//        if(V[i].codigo != 0){
-//            printf("\nViagem %d(%d)", i+1, V[i].codigo);
-//        }
-//    }
-//}
 
