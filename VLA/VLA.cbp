@@ -31,6 +31,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="VLA.h" />
 		<Unit filename="Vermelho_linhas_aereas.c">
 			<Option compilerVar="CC" />
 		</Unit>
