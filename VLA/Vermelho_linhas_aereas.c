@@ -9,8 +9,7 @@
 int main(){
     setlocale(LC_ALL, "Portuguese");
     Viagem viagem[NUM_VIAGEM];
-    int n_viagem = 0,exclusao_viagem = 0, valor_funcao_excluir = 0;
-    char resposta = '0';
+    int n_viagem = 0,exclusao_viagem = 0, valor_funcao_excluir = 0, resposta = 0;
     //loop principal do programa
     do{
         printf("                                               VERMELHO LINHAS AEREAS\n");
@@ -27,23 +26,22 @@ int main(){
         printf("                                          0-Sair\n");
         printf("                                     __________________________________________\n\n");
         // entrada do switch para as funções
-        scanf("%c",&resposta);
-        getchar();
+        scanf("%d",&resposta);
         switch (resposta) {
             // Inclusão de voos
-            case '1':
+            case 1:
                 system("cls");
                 n_viagem += inclusao_voo(viagem, n_viagem, exclusao_viagem);
                 system("cls");
                 break;
             // Alteração dos voos
-            case '2':
+            case 2:
                 system("cls");
                 alteracao_info_voo(viagem, n_viagem, exclusao_viagem);
                 system("cls");
                 break;
             // Exclusão de voos
-            case'3':
+            case 3:
                 system("cls");
 
                 //armazena o numero de viagens apagadas na var exclusao_viagem
@@ -56,20 +54,20 @@ int main(){
                 system("cls");
                 break;
             // Pesquisa por origem
-            case '4':
+            case 4:
                 system("cls");
                 lista_viagens(viagem, n_viagem);
                 //quant_voo_origem();
                 system("cls");
                 break;
             // Pesquisa por escalas
-            case'5':
+            case 5:
                  system("cls");
                  menor_quant_escala_voo(viagem, n_viagem);
                  system("cls");
                  break;
             // Sair do programa
-            case '0':
+            case 0:
                 return 0;
             // Entrada Invalida
             default:
@@ -77,6 +75,6 @@ int main(){
                 printf("                                           Opcao invalida, digite novamente.\n                        -------------------------------------------------------------------\n");
                 break;
         }
-    }while(resposta != '0');
+    }while(resposta != 0);
 }
 

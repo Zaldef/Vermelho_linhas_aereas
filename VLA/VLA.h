@@ -10,14 +10,15 @@
     int escalas;
 }Viagem;
 //PROT�TIPOS
-int inclusao_voo(Viagem V[], int quant_voo, int n_voo_del);
 void alteracao_info_voo(Viagem V[], int quant_voo, int n_voo_del);
 int exclusao_voo(Viagem V[], int quant_voo, int n_voo_del);
-void lista_viagens(Viagem V[], int quant_voo);
-void up();
+int inclusao_voo(Viagem V[], int quant_voo, int n_voo_del);
 void menor_quant_escala_voo(Viagem V[], int quant_voo);
-// void quant_voo_origem();
+void lista_viagens(Viagem V[], int quant_voo);
+void conversao(int *n,char *n2);
+void up();
 
+// void quant_voo_origem();
 
 int inclusao_voo(Viagem V[], int quant_voo, int n_voo_del){
     int resp_quant_voo = 0, max_viagem = 0, quant_tl_voo_e_voo_del = 0, contador_posicao = 0, a = 0;
@@ -25,10 +26,10 @@ int inclusao_voo(Viagem V[], int quant_voo, int n_voo_del){
     //verifica a quantidade de voos
     max_viagem = NUM_VIAGEM - quant_voo;
 
-    printf("INCLUSÃO DE VIAGENS\n");
+    printf("INCLUSAO DE VIAGENS\n");
     printf("\nDeseja incluir quantos voos?");
     while(scanf("%d",&resp_quant_voo) != ((resp_quant_voo>0) && (resp_quant_voo<max_viagem))){
-        printf("Entrada inválida. Digite um valor entre 1 à %d: ", max_viagem);
+        printf("Entrada invalida. Digite um valor entre 1 a %d: ", max_viagem);
     }
     if(quant_voo>0 && n_voo_del>0){
         quant_tl_voo_e_voo_del = (quant_voo+n_voo_del);
@@ -45,9 +46,9 @@ int inclusao_voo(Viagem V[], int quant_voo, int n_voo_del){
     }
     do{
         printf("\nVIAGEM %d:",a+1);
-        printf("\nDigite o código da viagem: ");
+        printf("\nDigite o codigo da viagem: ");
         while(scanf("%d",&V[a].codigo) != (V[a].codigo >=1000 && V[a].codigo <= 9999)){
-            printf("O número não possui 4 dígitos, digite novamente.\n");
+            printf("O numero não possui 4 digitos, digite novamente.\n");
         }
         printf("\nDigite a cidade de origem: ");
         getchar();
@@ -86,9 +87,9 @@ void alteracao_info_voo(Viagem V[], int quant_voo, int n_voo_del){
             }
         }
         printf("\n%d- Sair;\n",a);
-        printf("\nSelecione o código da viagem ou aperte para sair: ");
+        printf("\nSelecione o codigo da viagem ou aperte para sair: ");
         while(scanf("%d",&resposta) != ((resposta >=1000 && resposta <= 9999) || (resposta == a))){
-                printf("Código inválido, digite novamente.\n");
+                printf("Codigo invalido, digite novamente.\n");
         }
         for(int i = 0; i<quant_tl_voo_e_voo_del; i++){
             if(resposta == V[i].codigo) posicao_cod = i; //variavel recebe a posição referente o código digitado
@@ -96,9 +97,9 @@ void alteracao_info_voo(Viagem V[], int quant_voo, int n_voo_del){
         if(resposta == a) return; //atualiza o flag para sair dessa funçao
         do{
             printf("\nVIAGEM %d:",posicao_cod+1);
-            printf("\nDigite o código da viagem: ");
+            printf("\nDigite o codigo da viagem: ");
             while(scanf("%d",&V[posicao_cod].codigo) != (V[posicao_cod].codigo >=1000 && V[posicao_cod].codigo <= 9999)){
-                printf("Código inválido, digite novamente.\n");
+                printf("Codigo invalido, digite novamente.\n");
             }
             printf("\nDigite a cidade de origem: ");
             getchar();
@@ -114,7 +115,7 @@ void alteracao_info_voo(Viagem V[], int quant_voo, int n_voo_del){
             printf("\nDeseja alterar mais viagens? ");
             getchar();
             while(scanf("%c",&resposta2) != (('s' && 'S') || ('n' && 'N'))){
-                printf("\nResposta inválida, digite novamente");
+                printf("\nResposta invalida, digite novamente");
             }
         }
         if(resposta2 == 'n' || resposta2 == 'N') flag = 1; //atualiza o flag para sair dessa funçao
@@ -149,9 +150,9 @@ int exclusao_voo(Viagem V[], int quant_voo, int n_voo_del){
         if (contador_v_disp == quant_voo) viagems_excluidas = 0; //quant_voo - contador_v_disp;
         else if (contador_v_disp<quant_voo)viagems_excluidas = quant_voo - contador_v_disp;
         printf("\n%d- Sair;\n",contador_v_disp+1);
-        printf("\nSelecione o código da viagem ou aperte para sair: ");
+        printf("\nSelecione o codigo da viagem ou aperte para sair: ");
         while(scanf("%d",&resposta) != ((resposta >=1000 && resposta <= 9999) || (resposta == contador_v_disp+1))){
-                printf("Código inválido, digite novamente.\n");
+                printf("Codigo invalido, digite novamente.\n");
         }
         if (resposta >=1000 && resposta <= 9999){
             for(int i = 0; i<quant_tl_voo_e_voo_del; i++){
@@ -180,7 +181,7 @@ int exclusao_voo(Viagem V[], int quant_voo, int n_voo_del){
             printf("\nDeseja excluir mais viagens? ");
             getchar();
             while(scanf("%c",&resposta2) != (('s' && 'S') || ('n' && 'N'))){
-                printf("\nResposta inválida, digite novamente");
+                printf("\nResposta invalida, digite novamente");
             }
         }else flag = 1;
         if(resposta2 == 'n' || resposta2 == 'N') flag = 1; //atualiza o flag para sair dessa funçao
@@ -192,7 +193,7 @@ void lista_viagens (Viagem V[], int quant_voo){
     char resposta2 = 0;
     int flag = 0;
     char city_name[25];
-    printf("digite o nome da cidade de origem:");
+    printf("\nDigite o nome da cidade de origem: ");
     scanf("%s",city_name);
     up(city_name);
     do{
@@ -211,7 +212,7 @@ void lista_viagens (Viagem V[], int quant_voo){
         printf("\nSair?(S/N)");
         getchar();
         while(scanf("%c",&resposta2) != (('s' && 'S') || ('n' && 'N'))){
-            printf("\nResposta inv�lida, digite novamente");
+            printf("\nResposta invalida, digite novamente");
         }
         if(resposta2 == 's' || resposta2 == 'S'){
             flag = 1;
@@ -228,11 +229,11 @@ void menor_quant_escala_voo(Viagem V[], int quant_voo){
     int j = 0;
     int menor_escala=0;
 
-    printf("\ndigite a cidade de origem:");
+    printf("\nDigite a cidade de origem:");
     scanf("%s",origem_city);
     up(origem_city);
 
-    printf("\ndigite a cidade de destino:");
+    printf("\nDigite a cidade de destino:");
     scanf("%s",destino_city);
     up(destino_city);
 
@@ -264,13 +265,11 @@ void menor_quant_escala_voo(Viagem V[], int quant_voo){
         printf("\nSair(S/N)? ");
         getchar();
         while(scanf("%c",&resposta2) != (('s' && 'S') || ('n' && 'N'))){
-            printf("\nResposta inv�lida, digite novamente");
+            printf("\nResposta invalida, digite novamente");
         }
         if(resposta2 == 's' || resposta2 == 'S') flag = 1;
     }while (flag != 1);
 }
-
-
 
 //////////dexar string maiuscula///////////////
 
